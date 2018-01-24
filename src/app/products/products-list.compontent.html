@@ -1,25 +1,25 @@
 <div class='panel panel-primary'>
     <div class='panel-heading'>
-        Product List
+        {{pageTitle}}
     </div>
     <div class='panel-body'>
         <div class="row">
             <div class="col-md-2">Filter By</div>
             <div class="col-md-2">
-                <input type="text" />
+                <input type="text" [(ngModel)]='listFilter' />
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">Filtered By:</div>
+            <div class="col-md-6">Filtered By:{{listFilter}}</div>
             
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="table-responsive" *ngIf='products && products.length'>
         <table class="table">
             <thead>
                 <tr>
                     <th>
-                        <button class="btn btn-primary"></button>
+                        <button class="btn btn-primary" (click)='toggleButton()'>{{(showImage ? 'Hide ':'Show ') + 'Image'}}</button>
                     </th>
                     <th>Product</th>
                     <th>Code</th>
@@ -28,6 +28,17 @@
                     <th>Rating</th>
                 </tr>
             </thead>
+            <tbody>
+                <tr *ngFor='let product of filterProducts'>
+                    <td><img *ngIf='showImage' [src]='product.imageUrl' title="{{product.productName}}" 
+                        [style.margin.px]='imageMarginInPix' [style.width.px]='imageSizeInPix'/> </td>
+                    <td>{{product.productName | lowercase}}</td>
+                    <td>{{product.productCode | uppercase | spacePipe:'-' }}</td>
+                    <td>{{product.available}}</td>
+                    <td>{{product.price | currency:'USD':true:'1.1-1'}}</td>
+                    <td>{{product.rating}}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
 
